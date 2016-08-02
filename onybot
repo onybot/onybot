@@ -1,0 +1,34 @@
+#!/usr/bin/python3
+import os
+import argparse
+
+from conf import settings
+
+
+parser = argparse.ArgumentParser(description='Onybot tool')
+
+parser.add_argument('-s','--sketch', help='sketch path', required=False)
+parser.add_argument('-i','--ide', help='arduino IDE path', required=False)
+parser.add_argument('-o','--open', help='open arduino IDE', required=False, action='store_true')
+parser.add_argument('-b','--board', help='Arduino board', required=False)
+parser.add_argument('-p','--port', help='Usb port', required=False)
+parser.add_argument('-t','--test', help='Upload test code to the arduino', required=False, action='store_true')
+
+args = parser.parse_args()
+
+
+ide_path = settings.ARDUINO_IDE_PATH
+
+sketch_path = 'main/main.ino'
+
+board = settings.BOARD
+
+port = settings.PORT
+
+if args.open:
+    os.system('{} {}'.format(ide_path, sketch_path))
+else:
+    # copy libs
+    os.system('{ide_path} --board {board} --port {port} --upload {sketch}'.format(ide_path=ide_path, 
+        sketch=sketch_path, board=board, port=port))
+    # delete libs
