@@ -31,7 +31,8 @@ class Fsm {
 	int _currentState;
 	int _menuIndex;
 	bool _changedLine;
-	
+	int _start;
+
 	//methods
 	void _welcomeState(int event);
 	void _mainState(int event);

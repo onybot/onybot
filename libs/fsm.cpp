@@ -50,8 +50,9 @@ void Fsm::_setState(int state){
 
 void Fsm::_runEventWelcome(int event){
 	_changedLine = true;
-	delay(WELCOME_TIME);
-	_setMain();
+	if(millis() - _start > WELCOME_TIME || event != BTN_NONE){
+		_setMain();
+	}
 }
 
 
@@ -59,6 +60,8 @@ void Fsm::_setWelcome(){
 	_currentState=WELCOME_STATE;
 	firstLine = WELCOME_STRING_1;
 	secondLine = WELCOME_STRING_2;
+	_changedLine = true;
+	_start = millis();
 }
 
 
@@ -88,7 +91,7 @@ void Fsm::_runEventMain(int event){
 			break;
 		}
 	}
-	secondLine = "->" + secondLine;
+	secondLine = "-> " + secondLine;
 	if(previous != _menuIndex){
 		_changedLine = true;
 	} else {
