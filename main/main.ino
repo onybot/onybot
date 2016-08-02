@@ -1,29 +1,29 @@
-/*
-  Blink
-  Turns on an LED on for one second, then off for one second, repeatedly.
+#include "Arduino.h"
+#include <LiquidCrystal.h>
 
-  Most Arduinos have an on-board LED you can control. On the Uno and
-  Leonardo, it is attached to digital pin 13. If you're unsure what
-  pin the on-board LED is connected to on your Arduino model, check
-  the documentation at http://www.arduino.cc
+#include "constants.h"
+#include "utils.h"
 
-  This example code is in the public domain.
-
-  modified 8 May 2014
-  by Scott Fitzgerald
- */
+// select the pins used on the LCD panel
+LiquidCrystal lcd(8, 9, 4, 5, 6, 7);
 
 
-// the setup function runs once when you press reset or power the board
+
 void setup() {
-  // initialize digital pin 13 as an output.
-  pinMode(13, OUTPUT);
+	//init serial monitor
+	Serial.begin(9600);
+	Serial.println("Setup fun");
+
+//init lcd
+	lcd.begin(LCD_CHARS, LCD_LINES);        
+	pinMode(LCD_CTRL_LIGHT, OUTPUT);
+	analogWrite(LCD_CTRL_LIGHT, DEFAULT_LCD_LIGHT);
+	lcd.setCursor(0,0);
+	lcdPrintLine(lcd, 0, WELCOME_STRING_1);
+	lcdPrintLine(lcd, 1, WELCOME_STRING_2);
 }
 
-// the loop function runs over and over again forever
+
 void loop() {
-  digitalWrite(13, HIGH);   // turn the LED on (HIGH is the voltage level)
-  delay(100);              // wait for a second
-  digitalWrite(13, LOW);    // turn the LED off by making the voltage LOW
-  delay(500);              // wait for a second
+
 }

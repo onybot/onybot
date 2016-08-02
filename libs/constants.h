@@ -1,0 +1,21 @@
+
+#ifndef constants_h
+#define constants_h
+
+//COMMON
+#define MAX_ANALOG_WRITE 255
+
+//STRINGS
+#define WELCOME_TIME 1000
+#define WELCOME_STRING_1 "ONYBOT: ROBOTICS"
+#define WELCOME_STRING_2 "& CONSTRUCTIVISM"
+
+//LCD
+
+#define LCD_CHARS 16
+#define LCD_LINES 2
+#define LCD_CTRL_LIGHT  10
+#define DEFAULT_LCD_LIGHT MAX_ANALOG_WRITE/10
+
+
+#endif
