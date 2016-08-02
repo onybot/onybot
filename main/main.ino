@@ -32,7 +32,8 @@ void setup() {
 
 
 void loop() {
-	lcdPrintLine(lcd, 0, fsm.firstLine);
-	lcdPrintLine(lcd, 1, fsm.secondLine);
-	fsm.run_event(event.getEvent());
+	if(fsm.run_event(event.getEvent())){
+		lcdPrintLine(lcd, 0, fsm.firstLine);
+		lcdPrintLine(lcd, 1, fsm.secondLine);
+	}
 }

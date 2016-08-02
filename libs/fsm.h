@@ -17,7 +17,7 @@ class Fsm {
 	public:
 	//methods
 	void init();
-	void run_event(int event);
+	bool run_event(int event);
 
 	//attributes
 	String firstLine;
@@ -29,6 +29,9 @@ class Fsm {
 
 	//Attributes
 	int _currentState;
+	int _menuIndex;
+	bool _changedLine;
+	
 	//methods
 	void _welcomeState(int event);
 	void _mainState(int event);

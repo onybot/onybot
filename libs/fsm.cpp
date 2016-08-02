@@ -5,38 +5,28 @@
 
 
 void Fsm::init(){
-  _setState(INITIAL_STATE);
-  
+	_setState(INITIAL_STATE);
+
 }
 
 
-void Fsm::run_event(int event){
-  switch (_currentState)
-  {
-    case MAIN_STATE:
-    {
-      _runEventMain(event);
-      break;
-    }
-    case WELCOME_STATE:
-    {
-      _runEventWelcome(event);
-      break;
-    }
-
-  }
+bool Fsm::run_event(int event){
+	bool previous;
+	previous = _currentState;
+	switch (_currentState){
+		case MAIN_STATE:
+		{
+			_runEventMain(event);
+			break;
+		}
+		case WELCOME_STATE:
+		{
+			_runEventWelcome(event);
+			break;
+		}
+	}
+	return _changedLine;
 }
-
-
-void Fsm::_runEventMain(int event){
-
-};
-
-void Fsm::_runEventWelcome(int event){
-	delay(WELCOME_TIME);
-	_setMain();
-}
-
 
 
 void Fsm::_setState(int state){
@@ -54,6 +44,16 @@ void Fsm::_setState(int state){
 	}
 }
 
+////////////////////////////////////////////
+// WELCOME
+////////////////////////////////////////////
+
+void Fsm::_runEventWelcome(int event){
+	_changedLine = true;
+	delay(WELCOME_TIME);
+	_setMain();
+}
+
 
 void Fsm::_setWelcome(){
 	_currentState=WELCOME_STATE;
@@ -61,8 +61,48 @@ void Fsm::_setWelcome(){
 	secondLine = WELCOME_STRING_2;
 }
 
+
+////////////////////////////////////////////
+// MAIN
+////////////////////////////////////////////
+void Fsm::_runEventMain(int event){
+	int previous;
+	previous = _menuIndex;
+	if (event == BTN_DOWN){
+		_menuIndex = (_menuIndex + 1) % 3;
+	}
+	switch (_menuIndex) {
+		case 0:
+		{
+			secondLine = MENU_STRING_2_A;
+			break;
+		}
+		case 1:
+		{
+			secondLine = MENU_STRING_2_B;
+			break;
+		}
+		case 2:
+		{
+			secondLine = MENU_STRING_2_C;
+			break;
+		}
+	}
+	secondLine = "->" + secondLine;
+	if(previous != _menuIndex){
+		_changedLine = true;
+	} else {
+		_changedLine = false;
+	}
+
+}
+
+
+
 void Fsm::_setMain(){
-	_currentState=WELCOME_STATE;
-	firstLine = "test 1";
-	secondLine = "test 2";
+	_currentState=MAIN_STATE;
+	firstLine = MENU_STRING_1;
+	_menuIndex = 0;
+	_runEventMain(BTN_NONE);
+	_changedLine = true;
 }
