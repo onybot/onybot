@@ -3,32 +3,66 @@ import os
 import argparse
 
 from conf import settings
+def main():
+    directory = os.path.dirname(os.path.abspath(__file__))
+
+    parser = argparse.ArgumentParser(description='Onybot tool')
+
+    parser.add_argument('-s','--sketch', help='sketch path', required=False)
+    parser.add_argument('-i','--ide', help='arduino IDE path', required=False)
+    parser.add_argument('-c','--compile', help='compile code and upload', required=False, action='store_true')
+    parser.add_argument('-o','--open', help='open arduino IDE', required=False, action='store_true')
+    parser.add_argument('-b','--board', help='Arduino board', required=False)
+    parser.add_argument('-p','--port', help='Usb port', required=False)
+    parser.add_argument('-t','--test', help='Upload test code to the arduino', required=False, action='store_true')
+
+    args = parser.parse_args()
+    ide_path = settings.ARDUINO_IDE_PATH
+
+    sketch_path = os.path.join(directory, 'main', 'main.ino')
+    sketch_dir_path = os.path.join(directory, 'main')
 
 
-parser = argparse.ArgumentParser(description='Onybot tool')
+    board = settings.BOARD
 
-parser.add_argument('-s','--sketch', help='sketch path', required=False)
-parser.add_argument('-i','--ide', help='arduino IDE path', required=False)
-parser.add_argument('-o','--open', help='open arduino IDE', required=False, action='store_true')
-parser.add_argument('-b','--board', help='Arduino board', required=False)
-parser.add_argument('-p','--port', help='Usb port', required=False)
-parser.add_argument('-t','--test', help='Upload test code to the arduino', required=False, action='store_true')
-
-args = parser.parse_args()
+    port = settings.PORT
 
 
-ide_path = settings.ARDUINO_IDE_PATH
+    if args.open:
+        os.system('{} {}'.format(ide_path, sketch_path))
 
-sketch_path = 'main/main.ino'
+    if args.compile:
+        print_fun('COMPILATION')
 
-board = settings.BOARD
+        # copy libs
+        print('# libs')
+        libs_path = os.path.join(directory, 'libs')
+        for filename in os.listdir(libs_path):
+            lib_path = os.path.join(libs_path, filename)
+            print(lib_path, ' -> ', sketch_dir_path)
+            os.system('cp {} {}'.format(lib_path, sketch_dir_path))
+        
+        # COMPILE
+        cmd = '{ide_path} --board {board} --port {port} --upload {sketch}'.format(ide_path=ide_path, 
+            sketch=sketch_path, board=board, port=port)
+        print(cmd)
+        os.system(cmd)
+        
+        # delete libs
+        print('# libs')
+        libs_path = os.path.join(directory, 'libs')
+        for filename in os.listdir(libs_path):
+            lib_path = os.path.join(sketch_dir_path, filename)
+            print('delete: ', lib_path)
+            os.system('rm {}'.format(lib_path))
 
-port = settings.PORT
 
-if args.open:
-    os.system('{} {}'.format(ide_path, sketch_path))
-else:
-    # copy libs
-    os.system('{ide_path} --board {board} --port {port} --upload {sketch}'.format(ide_path=ide_path, 
-        sketch=sketch_path, board=board, port=port))
-    # delete libs
+def print_fun(string_):
+    print('\n')
+    print('#######################################')
+    print('#  ', string_)    
+    print('#######################################', '\n')
+
+
+
+main()
