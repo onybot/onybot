@@ -70,9 +70,20 @@ void Fsm::_setWelcome(){
 ////////////////////////////////////////////
 void Fsm::_runEventMain(int event){
 	int previous;
+	String aux;
 	previous = _menuIndex;
 	if (event == BTN_DOWN){
 		_menuIndex = (_menuIndex + 1) % 3;
+	}
+	if (event == BTN_UP){
+
+		Serial.println(_menuIndex);
+		Serial.println("BTN_DOWN");
+		_menuIndex = _menuIndex - 1;
+		if(_menuIndex < 0){
+			_menuIndex = 2;
+		}
+		Serial.println(_menuIndex);
 	}
 	switch (_menuIndex) {
 		case 0:
@@ -90,8 +101,12 @@ void Fsm::_runEventMain(int event){
 			secondLine = MENU_STRING_2_C;
 			break;
 		}
+		default:
+		secondLine = MENU_STRING_2_A;
+
 	}
-	secondLine = "-> " + secondLine;
+	aux = _menuIndex;
+	secondLine = aux + "-> " + secondLine;
 	if(previous != _menuIndex){
 		_changedLine = true;
 	} else {
