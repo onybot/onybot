@@ -53,6 +53,7 @@ void Fsm::_runEventWelcome(int event){
 	if(millis() - _start > WELCOME_TIME || event != BTN_NONE){
 		_setMain();
 	}
+	_changedLine = false;
 }
 
 
@@ -72,10 +73,10 @@ void Fsm::_runEventMain(int event){
 	int previous;
 	String aux;
 	previous = _menuIndex;
-	if (event == BTN_DOWN){
+	if (event == BTN_UP){
 		_menuIndex = (_menuIndex + 1) % 3;
 	}
-	if (event == BTN_UP){
+	if (event == BTN_DOWN){
 
 		Serial.println(_menuIndex);
 		Serial.println("BTN_DOWN");

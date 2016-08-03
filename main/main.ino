@@ -28,6 +28,8 @@ void setup() {
 
 	//init fsm
 	fsm.init();
+	lcdPrintLine(lcd, 0, fsm.firstLine);
+	lcdPrintLine(lcd, 1, fsm.secondLine);
 }
 
 
