@@ -40,8 +40,8 @@ class Fsm {
 	void _welcomeState(int event);
 	void _mainState(int event);
 	void _setState(int event);
-	String _runEventMenu(int event, String lineTwoArray[], int arrayLenght);
-	
+	String _runEventMenu(int event, String lineTwoArray[], int arrayLenght, bool showIndex);
+
 	// main
 	void _setMain();
 	void _runEventMain(int event);

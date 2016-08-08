@@ -53,7 +53,7 @@ void Fsm::_setState(int state){
 }
 
 
-String Fsm::_runEventMenu(int event, String lineTwoArray[], int arrayLenght){
+String Fsm::_runEventMenu(int event, String lineTwoArray[], int arrayLenght, bool showIndex){
 	
 	int previous;
 	String aux;
@@ -82,10 +82,14 @@ String Fsm::_runEventMenu(int event, String lineTwoArray[], int arrayLenght){
 	
 	// update line and set for rewriting
 	if(previous != _menuIndex){
-		aux = lineTwoArray[_menuIndex];
-		secondLine = aux;
-		aux = _menuIndex;
-		secondLine = aux + "-> " + secondLine;
+		if (showIndex == true){
+			aux = lineTwoArray[_menuIndex];
+			secondLine = aux;
+			aux = _menuIndex;
+			secondLine = aux + MENU_SEPARATOR + secondLine;
+		} else {
+			secondLine = lineTwoArray[_menuIndex];
+		}
 		return CHANGE_STRING;
 	} else {
 		return NO_CHANGE_STRING;
@@ -97,7 +101,6 @@ String Fsm::_runEventMenu(int event, String lineTwoArray[], int arrayLenght){
 ////////////////////////////////////////////
 
 void Fsm::_runEventWelcome(int event){
-	
 	int timeCondition;
 	timeCondition = millis() - _startState;
 	_changedLine = true;
@@ -125,29 +128,29 @@ void Fsm::_runEventMain(int event){
 	String menuResponse;
 	int arrayLenght;
 	int i;
-	arrayLenght = (int) sizeof(MENU_STRING_2)/sizeof(String);
+	arrayLenght = (int) sizeof(MAIN_MENU_STRING_2)/sizeof(String);
 	String strArray[arrayLenght];
 	for(i=0; i<arrayLenght; i++){
-		strArray[i] = MENU_STRING_2[i];
+		strArray[i] = MAIN_MENU_STRING_2[i];
 	}
-	menuResponse = _runEventMenu(event, strArray, arrayLenght);
+	menuResponse = _runEventMenu(event, strArray, arrayLenght, true);
 	if (menuResponse == NO_CHANGE_STRING){
 		_changedLine = false;
 	} else if (menuResponse == CHANGE_STRING){
 		_changedLine = true;
 
 	// PROGRAM
-	} if (menuResponse == MENU_PROGRAM){
+	} if (menuResponse == MAIN_MENU_PROGRAM){
 		return _setProgram();
 	
 	// RUN
-	} else if (menuResponse == MENU_RUN){
-		Serial.println(MENU_RUN);
+	} else if (menuResponse == MAIN_MENU_RUN){
+		Serial.println(MAIN_MENU_RUN);
 		_changedLine = false;
 
 	//VERSION
-	} else if (menuResponse == MENU_VERSION){
-		Serial.println(MENU_VERSION);
+	} else if (menuResponse == MAIN_MENU_VERSION){
+		Serial.println(MAIN_MENU_VERSION);
 		_changedLine = false;
 	}
 
@@ -173,19 +176,43 @@ void Fsm::_setMain(){
 void Fsm::_setProgram(){
 	Serial.println("set program");
 	_currentState = PROGRAM_STATE;
-	firstLine = "PROGRAMING";
-	secondLine = "PROGRAMING";
-	_startState = millis();
+	firstLine = PROGRAM_STRING_1;
+	_menuIndex = -1;
+	_runEventProgram(BTN_NONE);
 	_changedLine = true;
 }
 
 
 void Fsm::_runEventProgram(int event){
-	int timeCondition;
-	timeCondition = millis() - _startState;
-	if(timeCondition > WELCOME_TIME || event != BTN_NONE){
-		_setMain();
-		return;
+	String menuResponse;
+	int arrayLenght;
+	int i;
+	arrayLenght = (int) sizeof(PROGRAM_MENU_STRING_2)/sizeof(String);
+	String strArray[arrayLenght];
+	for(i=0; i<arrayLenght; i++){
+		strArray[i] = PROGRAM_MENU_STRING_2[i];
 	}
-	_changedLine = false;
+	menuResponse = _runEventMenu(event, strArray, arrayLenght, false);
+	if (menuResponse == NO_CHANGE_STRING){
+		_changedLine = false;
+	} else if (menuResponse == CHANGE_STRING){
+		_changedLine = true;
+	}
+	/*
+	// PROGRAM
+	} if (menuResponse == MAIN_MENU_PROGRAM){
+		return _setProgram();
+	
+	// RUN
+	} else if (menuResponse == MAIN_MENU_RUN){
+		Serial.println(MAIN_MENU_RUN);
+		_changedLine = false;
+
+	//VERSION
+	} else if (menuResponse == MAIN_MENU_VERSION){
+		Serial.println(MAIN_MENU_VERSION);
+		_changedLine = false;
+	}
+	*/
 }
+
