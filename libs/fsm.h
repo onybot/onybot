@@ -5,7 +5,10 @@
 
 #define WELCOME_STATE 0
 #define MAIN_STATE 1
+#define PROGRAM_STATE 2
 
+#define CHANGE_STRING "CS"
+#define NO_CHANGE_STRING "NCS"
 
 #define INITIAL_STATE WELCOME_STATE
 
@@ -31,12 +34,14 @@ class Fsm {
 	int _currentState;
 	int _menuIndex;
 	bool _changedLine;
-	int _start;
+	int _startState;
 
 	//methods
 	void _welcomeState(int event);
 	void _mainState(int event);
 	void _setState(int event);
+	String _runEventMenu(int event, String lineTwoArray[], int arrayLenght);
+	
 	// main
 	void _setMain();
 	void _runEventMain(int event);
@@ -45,6 +50,11 @@ class Fsm {
 	// welcome
 	void _setWelcome();
 	void _runEventWelcome(int event);
+
+	// program
+	void _setProgram();
+	void _runEventProgram(int event);
+
 
 };
 
