@@ -38,4 +38,5 @@ void loop() {
 		lcdPrintLine(lcd, 0, fsm.firstLine);
 		lcdPrintLine(lcd, 1, fsm.secondLine);
 	}
+	delay(LOOP_WAITING);
 }

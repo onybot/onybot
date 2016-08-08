@@ -6,7 +6,6 @@
 
 void Fsm::init(){
 	_setState(INITIAL_STATE);
-	_menuIndex = -1;
 
 }
 
@@ -82,35 +81,48 @@ void Fsm::_setWelcome(){
 // MAIN
 ////////////////////////////////////////////
 void Fsm::_runEventMain(int event){
-	//Serial.println("main event");
+	
 	int previous;
 	int numStrings;
-	numStrings = sizeof(MENU_STRING_2);
+
+	numStrings = sizeof(MENU_STRING_2)/sizeof(String);
 	String aux;
+
+	previous = _menuIndex;
 	
 	// first time
 	if (_menuIndex == -1){
 		_menuIndex = 0;
 		_changedLine = true;
-		return;
-	}
-
-	previous = _menuIndex;
-	if (event == BTN_UP){
-		_menuIndex = (_menuIndex + 1) % numStrings;
-	}
-	if (event == BTN_DOWN){
-
-		Serial.println(_menuIndex);
-		Serial.println("BTN_DOWN");
-		_menuIndex = _menuIndex - 1;
-		if(_menuIndex < 0){
+	} else {
+		if (event == BTN_UP){	
+			_menuIndex = _menuIndex + 1;
+			
+		} else if (event == BTN_DOWN){	
+			_menuIndex = _menuIndex - 1;
+			
+		}
+		if (_menuIndex  < 0 ){
 			_menuIndex = numStrings - 1;
 		}
-		Serial.println(_menuIndex);
+		_menuIndex = _menuIndex % numStrings;		
 	}
 	
-	secondLine = MENU_STRING_2[_menuIndex];
+	// update line and set for rewriting
+	if(previous != _menuIndex){
+		aux = MENU_STRING_2[_menuIndex];
+		secondLine = aux;
+		aux = _menuIndex;
+		secondLine = aux + "-> " + secondLine;
+
+		_changedLine = true;
+	} else {
+		_changedLine = false;
+	}
+
+	
+	aux = MENU_STRING_2[_menuIndex];
+	secondLine = aux;
 	aux = _menuIndex;
 	secondLine = aux + "-> " + secondLine;
 	
@@ -119,7 +131,7 @@ void Fsm::_runEventMain(int event){
 	} else {
 		_changedLine = false;
 	}
-
+	*/
 }
 
 
@@ -128,7 +140,7 @@ void Fsm::_setMain(){
 	Serial.println("set main");
 	_currentState = MAIN_STATE;
 	firstLine = MENU_STRING_1;
-	_menuIndex = 0;
+	_menuIndex = -1;
 	_runEventMain(BTN_NONE);
  	_changedLine = true;
 }
