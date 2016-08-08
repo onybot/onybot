@@ -16,7 +16,8 @@ class Program {
 
 	private:
 	//Attributes
-	int commands[MAX_COMMANDS];
+	int _commands[MAX_COMMANDS];
+	int _commandIndex;
 	//methods
 };
 

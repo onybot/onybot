@@ -4,16 +4,16 @@
 
 
 Program::Program(){
-	int i;
-	i = 0;
+	_commandIndex = 0;
 }
 
 
 bool Program::addCommand(String command){
-	int i;
-	i = 0;
+	_commands[_commandIndex] = command;
+	_commandIndex++;
+	if (_commandIndex > MAX_COMMANDS){
+		_commandIndex = 0;
+	}
 	Serial.println(command);
 	return true;
-
-
 }
