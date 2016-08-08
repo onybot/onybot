@@ -3,6 +3,9 @@
 #ifndef program_h
 #define program_h
 
+#define MAX_COMMANDS 100
+
+
 class Program {
 
 	public:
@@ -13,7 +16,7 @@ class Program {
 
 	private:
 	//Attributes
-
+	int commands[MAX_COMMANDS];
 	//methods
 };
 

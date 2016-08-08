@@ -7,7 +7,7 @@
 
 void Fsm::init(){
 	_setState(INITIAL_STATE);
-
+	_wait = false;
 }
 
 
@@ -188,34 +188,37 @@ void Fsm::_runEventProgram(int event){
 	String menuResponse;
 	int arrayLenght;
 	int i;
+	Serial.println("run program state");
+	if (_wait == true){
+		_wait = false;
+		delay(PROGRAM_WAIT);
+		_setProgram();
+		return;
+
+	}
+	// update strings
 	arrayLenght = (int) sizeof(PROGRAM_MENU_STRING_2)/sizeof(String);
 	String strArray[arrayLenght];
 	for(i=0; i<arrayLenght; i++){
 		strArray[i] = PROGRAM_MENU_STRING_2[i];
 	}
+	// get menu selected
 	menuResponse = _runEventMenu(event, strArray, arrayLenght, false);
+
 	if (menuResponse == NO_CHANGE_STRING){
-		_changedLine = false;
-	} else if (menuResponse == CHANGE_STRING){
-		_changedLine = true;
-	} else {
-		program.addCommand(menuResponse);
-	}
-	/*
-	// PROGRAM
-	} if (menuResponse == MAIN_MENU_PROGRAM){
-		return _setProgram();
-	
-	// RUN
-	} else if (menuResponse == MAIN_MENU_RUN){
-		Serial.println(MAIN_MENU_RUN);
+		_wait = false;
 		_changedLine = false;
 
-	//VERSION
-	} else if (menuResponse == MAIN_MENU_VERSION){
-		Serial.println(MAIN_MENU_VERSION);
-		_changedLine = false;
+	} else if (menuResponse == CHANGE_STRING){
+		_wait = false;
+		_changedLine = true;
+
+	} else {
+		program.addCommand(menuResponse);
+		firstLine = PROGRAM_WAIT_STRING_1;
+		secondLine = PROGRAM_WAIT_STRING_2;
+		_changedLine = true;
+		_wait = true;
 	}
-	*/
 }
 

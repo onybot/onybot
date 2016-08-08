@@ -37,7 +37,7 @@ class Fsm {
 	bool _changedLine;
 	int _startState;
 	Program program;
-
+	bool _wait;
 	//methods
 	void _welcomeState(int event);
 	void _mainState(int event);
