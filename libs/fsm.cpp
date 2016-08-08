@@ -2,6 +2,7 @@
 #include "fsm.h"
 #include "event.h"
 #include "constants.h"
+#include "program.h"
 
 
 void Fsm::init(){
@@ -197,6 +198,8 @@ void Fsm::_runEventProgram(int event){
 		_changedLine = false;
 	} else if (menuResponse == CHANGE_STRING){
 		_changedLine = true;
+	} else {
+		program.addCommand(menuResponse);
 	}
 	/*
 	// PROGRAM

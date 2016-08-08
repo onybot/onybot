@@ -1,4 +1,5 @@
 #include "Arduino.h"
+#include "program.h"
 
 #ifndef fsm_h
 #define fsm_h
@@ -35,6 +36,7 @@ class Fsm {
 	int _menuIndex;
 	bool _changedLine;
 	int _startState;
+	Program program;
 
 	//methods
 	void _welcomeState(int event);
