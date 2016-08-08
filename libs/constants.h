@@ -2,6 +2,8 @@
 #ifndef constants_h
 #define constants_h
 
+#define LOOP_WAITING = 100
+
 //COMMON
 #define MAX_ANALOG_WRITE 255
 
@@ -10,11 +12,7 @@
 #define WELCOME_STRING_1 "ONYBOT: ROBOTICS"
 #define WELCOME_STRING_2 "& CONSTRUCTIVISM"
 
-#define MENU_STRING_1 "ONYBOT - MENU:"
-#define MENU_STRING_2_A "PROGRAMAR"
-#define MENU_STRING_2_B "EJECUTAR"
-#define MENU_STRING_2_C "VERSION"
-
+const String MENU_STRING_2[] PROGMEM = {"PROGRAMAR", "EJECUTAR", "VERSION"};
 
 
 //LCD
