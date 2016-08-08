@@ -37,9 +37,13 @@ class Fsm {
 	void _welcomeState(int event);
 	void _mainState(int event);
 	void _setState(int event);
+	// main
 	void _setMain();
-	void _setWelcome();
 	void _runEventMain(int event);
+	void _selectMenu();
+	
+	// welcome
+	void _setWelcome();
 	void _runEventWelcome(int event);
 
 };

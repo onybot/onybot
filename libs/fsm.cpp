@@ -101,11 +101,16 @@ void Fsm::_runEventMain(int event){
 		} else if (event == BTN_DOWN){	
 			_menuIndex = _menuIndex - 1;
 			
+		} else if (event == BTN_SELECT || event == BTN_RIGHT ||event ==  BTN_LEFT){
+			// change state
+			_selectMenu();
+			_changedLine = true;
+			return;
 		}
 		if (_menuIndex  < 0 ){
 			_menuIndex = numStrings - 1;
 		}
-		_menuIndex = _menuIndex % numStrings;		
+		_menuIndex = _menuIndex % numStrings;
 	}
 	
 	// update line and set for rewriting
@@ -133,7 +138,17 @@ void Fsm::_runEventMain(int event){
 	}
 }
 
-
+void Fsm::_selectMenu(){
+	String menuString;
+	menuString = MENU_STRING_2[_menuIndex];
+	if (menuString == MENU_PROGRAM){
+		Serial.println(MENU_PROGRAM);
+	} else if (menuString ==MENU_RUN){
+		Serial.println(MENU_RUN);
+	} else if (menuString ==MENU_VERSION){
+		Serial.println(MENU_VERSION);
+	}
+}
 
 void Fsm::_setMain(){
 	Serial.println("set main");
