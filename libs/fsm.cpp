@@ -124,14 +124,13 @@ void Fsm::_runEventMain(int event){
 	aux = MENU_STRING_2[_menuIndex];
 	secondLine = aux;
 	aux = _menuIndex;
-	secondLine = aux + "-> " + secondLine;
+	secondLine = aux + " -> " + secondLine;
 	
 	if(previous != _menuIndex){
 		_changedLine = true;
 	} else {
 		_changedLine = false;
 	}
-	*/
 }
 
 
