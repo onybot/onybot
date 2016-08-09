@@ -1,13 +1,17 @@
 #!/usr/bin/python3
 import os
+import sys
 import argparse
 
 from conf import settings
+
+
+
 def main():
+    compilation_error = False
+
     directory = os.path.dirname(os.path.abspath(__file__))
-
     parser = argparse.ArgumentParser(description='Onybot tool')
-
     parser.add_argument('-s','--sketch', help='sketch path', required=False)
     parser.add_argument('-i','--ide', help='arduino IDE path', required=False)
     parser.add_argument('-c','--compile', help='compile code and upload', required=False, action='store_true')
@@ -21,7 +25,6 @@ def main():
 
     sketch_path = os.path.join(directory, 'main', 'main.ino')
     sketch_dir_path = os.path.join(directory, 'main')
-
 
     board = settings.BOARD
 
@@ -46,8 +49,10 @@ def main():
         cmd = '{ide_path} --board {board} --port {port} --upload {sketch}'.format(ide_path=ide_path, 
             sketch=sketch_path, board=board, port=port)
         print(cmd)
-        os.system(cmd)
+        response = os.system(cmd)
         
+        if response != 0:
+            compilation_error = True
         # delete libs
         print('# libs')
         libs_path = os.path.join(directory, 'libs')
@@ -55,7 +60,7 @@ def main():
             lib_path = os.path.join(sketch_dir_path, filename)
             print('delete: ', lib_path)
             os.system('rm {}'.format(lib_path))
-
+    return compilation_error
 
 def print_fun(string_):
     print('\n')
@@ -64,5 +69,9 @@ def print_fun(string_):
     print('#######################################', '\n')
 
 
-
-main()
+if __name__ == "__main__":
+    compilation_error = main()
+    if compilation_error:
+        sys.exit(1)
+    else:
+        sys.exit(0)
