@@ -66,10 +66,10 @@ String Fsm::_runEventMenu(int event, String lineTwoArray[], int arrayLenght, boo
 		_changedLine = true;
 	} else {
 		if (event == BTN_UP){	
-			_menuIndex = _menuIndex + 1;
+			_menuIndex = _menuIndex - 1;
 			
 		} else if (event == BTN_DOWN){	
-			_menuIndex = _menuIndex - 1;
+			_menuIndex = _menuIndex + 1;
 			
 		} else if (event == BTN_SELECT || event == BTN_RIGHT){
 			// change state

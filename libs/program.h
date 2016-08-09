@@ -25,7 +25,6 @@ class Program {
 	//methods
 	void run();
 	void runCommand(COMMAND cmd);
-
 };
 
 
