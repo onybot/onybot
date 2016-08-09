@@ -2,6 +2,7 @@
 #include "fsm.h"
 #include "event.h"
 #include "constants.h"
+#include "command.h"
 #include "program.h"
 
 
@@ -282,7 +283,7 @@ void Fsm::_setView(){
 void Fsm::_runEventView(int event){
 
 	String menuResponse;
-	COMMAND cmd;
+	Command cmd;
 	int arrayLenght;
 	int i;
 	bool showIndex;
@@ -383,7 +384,7 @@ void Fsm::_setRun(){
 }
 
 void Fsm::_runEventRun(int event){
-	COMMAND cmd;
+	Command cmd;
 	String previous;
 
 	cmd = program.run();

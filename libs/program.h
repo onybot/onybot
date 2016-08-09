@@ -1,16 +1,11 @@
 #include "Arduino.h"
+#include "command.h"
 
 #ifndef program_h
 #define program_h
 
 #define MAX_COMMANDS 100
 
-struct COMMAND {
-	int next;
-	String id;
-	String info;
-	bool empty;
-};
 
 class Program {
 
@@ -18,16 +13,16 @@ class Program {
 	//methods
 	Program();
 	bool addCommand(String str);
-	COMMAND run();
+	Command run();
 	int getNumCommads();
-	COMMAND getCommand(int index);
+	Command getCommand(int index);
 	void clear();
 
 	//Attributes
 
 	private:
 	//Attributes
-	COMMAND _commands[MAX_COMMANDS];
+	Command _commands[MAX_COMMANDS];
 	int _programIndex;
 	int _runIndex;
 	bool running;
@@ -35,7 +30,7 @@ class Program {
 
 	//methods
 	
-	COMMAND runCommand(int index);
+	Command runCommand(int index);
 };
 
 

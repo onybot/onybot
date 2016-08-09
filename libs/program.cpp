@@ -1,5 +1,6 @@
 #include "Arduino.h"
 #include "program.h"
+#include "command.h"
 #include "constants.h"
 
 
@@ -12,8 +13,7 @@ Program::Program(){
 
 
 bool Program::addCommand(String str){
-	COMMAND cmd;
-	cmd.next = -1;
+	Command cmd;
 	cmd.id = str;
 	cmd.info = String(_programIndex + 1, DEC) + RUN_SEPARATOR + str;
 	cmd.empty = false;
@@ -26,8 +26,8 @@ bool Program::addCommand(String str){
 }
 
 
-COMMAND Program::run(){
-	COMMAND cmd;
+Command Program::run(){
+	Command cmd;
 	if (running == false){
 		running = true;
 		_runIndex = 0;
@@ -42,9 +42,9 @@ COMMAND Program::run(){
 	return cmd;
 }
 
-COMMAND Program::runCommand(int index){
+Command Program::runCommand(int index){
 
-	COMMAND cmd;
+	Command cmd;
 	cmd = _commands[index];
 	if (_currentCommand != index){
 		// run command first time
@@ -53,7 +53,7 @@ COMMAND Program::runCommand(int index){
 	} else {
 		// not first time. run command actually
 		// run command
-		delay(COMMAND_TEST_DELAY);
+		cmd.run();
 
 		// next command;
 		_runIndex ++;
@@ -66,7 +66,7 @@ int Program::getNumCommads(){
 	return _programIndex;
 }
 
-COMMAND Program::getCommand(int index){
+Command Program::getCommand(int index){
 	return _commands[index];
 }
 
