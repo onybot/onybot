@@ -216,7 +216,7 @@ void Fsm::_runEventProgram(int event){
 	} else {
 		program.addCommand(menuResponse);
 		firstLine = PROGRAM_WAIT_STRING_1;
-		secondLine = PROGRAM_WAIT_STRING_2;
+		secondLine = menuResponse;
 		_changedLine = true;
 		_wait = true;
 	}
