@@ -5,18 +5,22 @@
 
 #define MAX_COMMANDS 100
 
+struct COMMAND {
+	int next;
+	String id;
+};
 
 class Program {
 
 	public:
 	//methods
 	Program();
-	bool addCommand(String command);
+	bool addCommand(String str);
 	//attributes
 
 	private:
 	//Attributes
-	int _commands[MAX_COMMANDS];
+	COMMAND _commands[MAX_COMMANDS];
 	int _commandIndex;
 	//methods
 };
