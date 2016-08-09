@@ -10,6 +10,7 @@
 
 #define CHANGE_STRING "CS"
 #define NO_CHANGE_STRING "NCS"
+#define BACK_STRING "BCK"
 
 #define INITIAL_STATE WELCOME_STATE
 

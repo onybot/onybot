@@ -71,9 +71,12 @@ String Fsm::_runEventMenu(int event, String lineTwoArray[], int arrayLenght, boo
 		} else if (event == BTN_DOWN){	
 			_menuIndex = _menuIndex - 1;
 			
-		} else if (event == BTN_SELECT || event == BTN_RIGHT ||event ==  BTN_LEFT){
+		} else if (event == BTN_SELECT || event == BTN_RIGHT){
 			// change state
 			return lineTwoArray[_menuIndex];
+		} else if (event == BTN_LEFT){
+			// change state
+			return BACK_STRING;
 		}
 		if (_menuIndex  < 0 ){
 			_menuIndex = arrayLenght - 1;
