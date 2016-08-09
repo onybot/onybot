@@ -23,6 +23,9 @@ class Program {
 	COMMAND _commands[MAX_COMMANDS];
 	int _commandIndex;
 	//methods
+	void run();
+	void runCommand(COMMAND cmd);
+
 };
 
 

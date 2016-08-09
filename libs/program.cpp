@@ -20,3 +20,14 @@ bool Program::addCommand(String str){
 	Serial.println(cmd.id);
 	return true;
 }
+
+
+void Program::run(){
+	int i;
+	for(i=0; i<_commandIndex; i++){
+		runCommand(_commands[i]);
+	}
+}
+
+void  Program::runCommand(COMMAND cmd){
+}
