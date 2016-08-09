@@ -32,7 +32,7 @@ class Fsm {
 	//attributes
 	String firstLine;
 	String secondLine;
-
+	bool automaticLight;
 
 	private:
 

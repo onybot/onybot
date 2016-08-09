@@ -8,6 +8,7 @@
 void Fsm::init(){
 	_setState(INITIAL_STATE);
 	_wait = false;
+	automaticLight = true;
 }
 
 
@@ -378,6 +379,7 @@ void Fsm::_setRun(){
 	secondLine = RUN_STRING_2;
 	_changedLine = true;
 	_startState = millis();
+	automaticLight = false;
 }
 
 void Fsm::_runEventRun(int event){
@@ -394,6 +396,7 @@ void Fsm::_runEventRun(int event){
 			_changedLine = false;
 		}
 	} else {
+		automaticLight = true;
 		_setMain();
 		return;
 	}

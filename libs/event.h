@@ -30,6 +30,7 @@ class Event
   //methods
    Event();
    int getEvent();
+   int getLightIntensity();
   //attributes
   
   private:
