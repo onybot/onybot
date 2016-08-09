@@ -15,7 +15,7 @@ bool Program::addCommand(String str){
 	COMMAND cmd;
 	cmd.next = -1;
 	cmd.id = str;
-	cmd.info = str;
+	cmd.info = String(_programIndex + 1, DEC) + RUN_SEPARATOR + str;
 	cmd.empty = false;
 	_commands[_programIndex] = cmd;
 	_programIndex++;

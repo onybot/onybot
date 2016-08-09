@@ -63,7 +63,7 @@ const String PROGRAM_MENU_STRING_2[] PROGMEM = {
 #define RUN_STRING_1 "EJECUTANDO"
 #define RUN_STRING_2 "ORDEN"
 #define COMMAND_TEST_DELAY 1000
-
+#define RUN_SEPARATOR " - "
 //LCD
 
 #define LCD_CHARS 16
