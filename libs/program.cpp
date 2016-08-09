@@ -40,3 +40,7 @@ int Program::getNumCommads(){
 COMMAND Program::getCommand(int index){
 	return _commands[index];
 }
+
+void Program::clear(){
+	_commandIndex = 0;
+}

@@ -19,7 +19,7 @@ class Program {
 
 	int getNumCommads();
 	COMMAND getCommand(int index);
-	
+	void clear();
 	//attributes
 
 	private:

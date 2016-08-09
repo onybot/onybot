@@ -5,6 +5,7 @@
 #define LOOP_WAITING 500
 
 #define MENU_SEPARATOR " -> "
+
 //COMMON
 #define MAX_ANALOG_WRITE 255
 
@@ -53,7 +54,9 @@ const String PROGRAM_MENU_STRING_2[] PROGMEM = {
 #define VIEW_STRING_1 "ALMACENADO"
 #define VIEW_STRING_EMPTY "------ "
 
-
+#define DELETE_STRING_1 "BORRANDO"
+#define DELETE_STRING_2 "ORDENES"
+#define DELETE_TIME 1500
 
 //LCD
 

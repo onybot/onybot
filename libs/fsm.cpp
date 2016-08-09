@@ -35,6 +35,12 @@ bool Fsm::run_event(int event){
 			_runEventView(event);
 			break;
 		}
+		case DELETE_STATE:
+		{
+			_runEventDelete(event);
+			break;
+		}
+
 	}
 	return _changedLine;
 }
@@ -154,6 +160,10 @@ void Fsm::_runEventMain(int event){
 	// VIEW
 	} if (menuResponse == MAIN_MENU_VIEW){
 		return _setView();
+	
+	// DELETE
+	} if (menuResponse == MAIN_MENU_DELETE){
+		return _setDelete();
 	
 	// RUN
 	} else if (menuResponse == MAIN_MENU_RUN){
@@ -286,4 +296,30 @@ void Fsm::_runEventView(int event){
 	}else{
 		_changedLine = false;
 	}
+}
+
+
+////////////////////////////////////////////
+// DELETE
+////////////////////////////////////////////
+
+
+void Fsm::_setDelete(){
+	_currentState = DELETE_STATE;
+	firstLine = DELETE_STRING_1;
+	secondLine = DELETE_STRING_2;
+	_changedLine = true;
+	_startState = millis();
+	program.clear();
+}
+
+void Fsm::_runEventDelete(int event){
+	int timeCondition;
+	timeCondition = millis() - _startState;
+	_changedLine = true;
+	if(timeCondition > DELETE_TIME || event != BTN_NONE){
+		_setMain();
+		return;
+	}
+	_changedLine = false;
 }

@@ -8,6 +8,7 @@
 #define MAIN_STATE 1
 #define PROGRAM_STATE 2
 #define VIEW_STATE 3
+#define DELETE_STATE 4
 
 #define CHANGE_STRING "CS"
 #define NO_CHANGE_STRING "NCS"
@@ -63,6 +64,9 @@ class Fsm {
 	void _setView();
 	void _runEventView(int event);
 
+	// delete
+	void _setDelete();
+	void _runEventDelete(int event);
 
 };
 
