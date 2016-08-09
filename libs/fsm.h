@@ -10,6 +10,7 @@
 #define VIEW_STATE 3
 #define DELETE_STATE 4
 #define VERSION_STATE 5
+#define RUN_STATE 6
 
 
 #define CHANGE_STRING "CS"
@@ -64,7 +65,11 @@ class Fsm {
 
 	// view
 	void _setView();
-	void _runEventView(int event);
+	void _runEventView(int event);	
+
+	// run
+	void _setRun();
+	void _runEventRun(int event);
 
 	// delete
 	void _setDelete();

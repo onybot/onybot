@@ -8,6 +8,8 @@
 struct COMMAND {
 	int next;
 	String id;
+	String info;
+	bool empty;
 };
 
 class Program {
@@ -16,19 +18,24 @@ class Program {
 	//methods
 	Program();
 	bool addCommand(String str);
-
+	COMMAND run();
 	int getNumCommads();
 	COMMAND getCommand(int index);
 	void clear();
-	//attributes
+
+	//Attributes
 
 	private:
 	//Attributes
 	COMMAND _commands[MAX_COMMANDS];
-	int _commandIndex;
+	int _programIndex;
+	int _runIndex;
+	bool running;
+	int _currentCommand;
+
 	//methods
-	void run();
-	void runCommand(COMMAND cmd);
+	
+	COMMAND runCommand(int index);
 };
 
 

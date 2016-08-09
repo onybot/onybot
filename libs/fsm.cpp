@@ -45,6 +45,13 @@ bool Fsm::run_event(int event){
 			_runEventVersion(event);
 			break;
 		}
+		case RUN_STATE:
+		{
+			_runEventRun(event);
+			break;
+		}
+
+
 	}
 	return _changedLine;
 }
@@ -171,8 +178,7 @@ void Fsm::_runEventMain(int event){
 	
 	// RUN
 	} else if (menuResponse == MAIN_MENU_RUN){
-		Serial.println(MAIN_MENU_RUN);
-		_changedLine = false;
+		return _setRun();
 
 	//VERSION
 	} else if (menuResponse == MAIN_MENU_VERSION){
@@ -269,7 +275,6 @@ void Fsm::_runEventView(int event){
 	int i;
 	bool showIndex;
 
-	Serial.println("event view");
 	// update strings
 	arrayLenght = program.getNumCommads();
 
@@ -348,3 +353,40 @@ void Fsm::_runEventVersion(int event){
 	}
 	_changedLine = false;
 }
+
+
+
+////////////////////////////////////////////
+// RUN
+////////////////////////////////////////////
+
+void Fsm::_setRun(){
+	Serial.println("set run");
+	_currentState = RUN_STATE;
+	firstLine = RUN_STRING_1;
+	secondLine = RUN_STRING_2;
+	_changedLine = true;
+	_startState = millis();
+}
+
+void Fsm::_runEventRun(int event){
+	COMMAND cmd;
+	String previous;
+
+	cmd = program.run();
+	if (cmd.empty == false){
+		previous = secondLine;
+		if (secondLine != cmd.info){
+			secondLine = cmd.info;
+			_changedLine = true;
+		} else {
+			_changedLine = false;
+		}
+	} else {
+		_setMain();
+		return;
+	}
+	
+}
+
+

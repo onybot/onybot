@@ -25,8 +25,8 @@
 const String MAIN_MENU_STRING_2[] PROGMEM = {
 	MAIN_MENU_PROGRAM,
 	MAIN_MENU_VIEW,
-	MAIN_MENU_DELETE,
 	MAIN_MENU_RUN,
+	MAIN_MENU_DELETE,
 	MAIN_MENU_VERSION
 };
 
@@ -58,6 +58,12 @@ const String PROGRAM_MENU_STRING_2[] PROGMEM = {
 #define VERSION_STRING_1 "ONYBOT 0.0.1"
 #define VERSION_STRING_2 "www.onytes.com"
 #define VERSION_TIME 1500 //time showing version info
+
+
+#define RUN_STRING_1 "EJECUTANDO"
+#define RUN_STRING_2 "ORDEN"
+#define COMMAND_TEST_DELAY 1000
+
 //LCD
 
 #define LCD_CHARS 16
