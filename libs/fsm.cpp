@@ -119,7 +119,7 @@ String Fsm::_runEventMenu(int event, String lineTwoArray[], int arrayLenght, boo
 		if (showIndex == true){
 			aux = lineTwoArray[_menuIndex];
 			secondLine = aux;
-			aux = _menuIndex;
+			aux = _menuIndex + 1;
 			secondLine = aux + MENU_SEPARATOR + secondLine;
 		} else {
 			secondLine = lineTwoArray[_menuIndex];
