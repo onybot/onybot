@@ -30,9 +30,11 @@ bool Fsm::run_event(int event){
 			_runEventProgram(event);
 			break;
 		}
-	}
-	if (_changedLine==true){
-		Serial.println("change");
+		case VIEW_STATE:
+		{
+			_runEventView(event);
+			break;
+		}
 	}
 	return _changedLine;
 }
@@ -151,8 +153,7 @@ void Fsm::_runEventMain(int event){
 	
 	// VIEW
 	} if (menuResponse == MAIN_MENU_VIEW){
-		Serial.println(MAIN_MENU_VIEW);
-		_changedLine = false;
+		return _setView();
 	
 	// RUN
 	} else if (menuResponse == MAIN_MENU_RUN){
@@ -169,7 +170,6 @@ void Fsm::_runEventMain(int event){
 
 
 void Fsm::_setMain(){
-	Serial.println("set main");
 	_currentState = MAIN_STATE;
 	firstLine = MENU_STRING_1;
 	_menuIndex = -1;
@@ -185,7 +185,6 @@ void Fsm::_setMain(){
 // PROGRAM
 ////////////////////////////////////////////
 void Fsm::_setProgram(){
-	Serial.println("set program");
 	_currentState = PROGRAM_STATE;
 	firstLine = PROGRAM_STRING_1;
 	_menuIndex = -1;
@@ -198,7 +197,6 @@ void Fsm::_runEventProgram(int event){
 	String menuResponse;
 	int arrayLenght;
 	int i;
-	Serial.println("run program state");
 
 	if (_wait == true){
 		_wait = false;
@@ -236,3 +234,56 @@ void Fsm::_runEventProgram(int event){
 	}
 }
 
+
+////////////////////////////////////////////
+// VIEW
+////////////////////////////////////////////
+
+void Fsm::_setView(){
+	Serial.println("set view");
+	_currentState = VIEW_STATE;
+	firstLine = VIEW_STRING_1;
+	_menuIndex = -1;
+	_runEventView(BTN_NONE);
+	_changedLine = true;
+}
+
+void Fsm::_runEventView(int event){
+
+	String menuResponse;
+	COMMAND cmd;
+	int arrayLenght;
+	int i;
+	bool showIndex;
+
+	Serial.println("event view");
+	// update strings
+	arrayLenght = program.getNumCommads();
+
+	if (arrayLenght == 0){
+		showIndex = false;
+		String strArray[1];
+		strArray[i] = VIEW_STRING_EMPTY;
+		// get menu selected
+		menuResponse = _runEventMenu(event, strArray, arrayLenght, showIndex);
+	} else {
+		String strArray[arrayLenght];
+		showIndex = true;
+		for(i=0; i<arrayLenght; i++){
+			cmd = program.getCommand(i);
+			strArray[i] = cmd.id;
+		}
+		// get menu selected
+		menuResponse = _runEventMenu(event, strArray, arrayLenght, showIndex);
+	}
+
+	if (menuResponse == NO_CHANGE_STRING ){
+		_changedLine = false;
+	} else if (menuResponse == CHANGE_STRING && arrayLenght > 0){
+		_changedLine = true;
+	} else if (menuResponse == BACK_STRING){
+		_setMain();
+	}else{
+		_changedLine = false;
+	}
+}

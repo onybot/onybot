@@ -29,5 +29,14 @@ void Program::run(){
 	}
 }
 
-void  Program::runCommand(COMMAND cmd){
+void Program::runCommand(COMMAND cmd){
+}
+
+
+int Program::getNumCommads(){
+	return _commandIndex;
+}
+
+COMMAND Program::getCommand(int index){
+	return _commands[index];
 }

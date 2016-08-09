@@ -50,6 +50,8 @@ const String PROGRAM_MENU_STRING_2[] PROGMEM = {
 };
 
 
+#define VIEW_STRING_1 "ALMACENADO"
+#define VIEW_STRING_EMPTY "------ "
 
 
 

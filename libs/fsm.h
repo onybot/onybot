@@ -7,6 +7,7 @@
 #define WELCOME_STATE 0
 #define MAIN_STATE 1
 #define PROGRAM_STATE 2
+#define VIEW_STATE 3
 
 #define CHANGE_STRING "CS"
 #define NO_CHANGE_STRING "NCS"
@@ -57,6 +58,10 @@ class Fsm {
 	// program
 	void _setProgram();
 	void _runEventProgram(int event);
+
+	// view
+	void _setView();
+	void _runEventView(int event);
 
 
 };

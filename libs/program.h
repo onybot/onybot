@@ -16,6 +16,10 @@ class Program {
 	//methods
 	Program();
 	bool addCommand(String str);
+
+	int getNumCommads();
+	COMMAND getCommand(int index);
+	
 	//attributes
 
 	private:
