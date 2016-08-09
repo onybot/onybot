@@ -39,7 +39,7 @@ void loop() {
 		lcdPrintLine(lcd, 0, fsm.firstLine);
 		lcdPrintLine(lcd, 1, fsm.secondLine);
 	}
-	if (fsm.automaticLight == true){
+	if (fsm.automaticLight == true && LCD_AUTOMATIC_LIGHT == true){
 		light = event.getLightIntensity();
 		analogWrite(LCD_CTRL_LIGHT_PIN, light);
 	}
