@@ -3,13 +3,6 @@
 #ifndef command_h
 #define command_h
 
-/*struct COMMAND {
-	int next;
-	String id;
-	String info;
-	bool empty;
-};*/
-
 class Command {
 
 	public:
