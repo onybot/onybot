@@ -73,7 +73,7 @@ void Fsm::_setState(int state){
 }
 
 
-String Fsm::_runEventMenu(int event, String lineTwoArray[], int arrayLenght, bool showIndex){
+String Fsm::_runEventMenu(int event, String lineTwoArray[], int arrayLenght, bool showIndex, bool looping){
 	
 	int previous;
 	String aux;
@@ -84,7 +84,7 @@ String Fsm::_runEventMenu(int event, String lineTwoArray[], int arrayLenght, boo
 		_menuIndex = 0;
 		_changedLine = true;
 	} else {
-		if (event == BTN_UP){	
+		if (event == BTN_UP){
 			_menuIndex = _menuIndex - 1;
 			
 		} else if (event == BTN_DOWN){	
@@ -97,8 +97,19 @@ String Fsm::_runEventMenu(int event, String lineTwoArray[], int arrayLenght, boo
 			// change state
 			return BACK_STRING;
 		}
-		if (_menuIndex  < 0 ){
-			_menuIndex = arrayLenght - 1;
+		if (_menuIndex < 0 ){
+			if (looping == true){
+				_menuIndex = arrayLenght - 1;
+			} else {
+				_menuIndex = 0;
+			}
+		}
+		if (_menuIndex > arrayLenght - 1){
+			if (looping == true){
+				_menuIndex = 0;
+			} else {
+				_menuIndex = arrayLenght - 1;
+			}
 		}
 		_menuIndex = _menuIndex % arrayLenght;
 	}
@@ -156,7 +167,7 @@ void Fsm::_runEventMain(int event){
 	for(i=0; i<arrayLenght; i++){
 		strArray[i] = MAIN_MENU_STRING_2[i];
 	}
-	menuResponse = _runEventMenu(event, strArray, arrayLenght, true);
+	menuResponse = _runEventMenu(event, strArray, arrayLenght, true, true);
 
 	// update display
 	if (menuResponse == NO_CHANGE_STRING){
@@ -233,7 +244,7 @@ void Fsm::_runEventProgram(int event){
 	}
 
 	// get menu selected
-	menuResponse = _runEventMenu(event, strArray, arrayLenght, false);
+	menuResponse = _runEventMenu(event, strArray, arrayLenght, false, true);
 
 	if (menuResponse == NO_CHANGE_STRING){
 		_wait = false;
@@ -283,7 +294,7 @@ void Fsm::_runEventView(int event){
 		String strArray[1];
 		strArray[i] = VIEW_STRING_EMPTY;
 		// get menu selected
-		menuResponse = _runEventMenu(event, strArray, arrayLenght, showIndex);
+		menuResponse = _runEventMenu(event, strArray, arrayLenght, showIndex, false);
 	} else {
 		String strArray[arrayLenght];
 		showIndex = true;
@@ -292,7 +303,7 @@ void Fsm::_runEventView(int event){
 			strArray[i] = cmd.id;
 		}
 		// get menu selected
-		menuResponse = _runEventMenu(event, strArray, arrayLenght, showIndex);
+		menuResponse = _runEventMenu(event, strArray, arrayLenght, showIndex, false);
 	}
 
 	if (menuResponse == NO_CHANGE_STRING ){

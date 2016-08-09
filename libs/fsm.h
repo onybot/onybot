@@ -48,7 +48,7 @@ class Fsm {
 	void _welcomeState(int event);
 	void _mainState(int event);
 	void _setState(int event);
-	String _runEventMenu(int event, String lineTwoArray[], int arrayLenght, bool showIndex);
+	String _runEventMenu(int event, String lineTwoArray[], int arrayLenght, bool showIndex, bool looping);
 
 	// main
 	void _setMain();
