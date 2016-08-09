@@ -40,7 +40,11 @@ bool Fsm::run_event(int event){
 			_runEventDelete(event);
 			break;
 		}
-
+		case VERSION_STATE:
+		{
+			_runEventVersion(event);
+			break;
+		}
 	}
 	return _changedLine;
 }
@@ -172,8 +176,7 @@ void Fsm::_runEventMain(int event){
 
 	//VERSION
 	} else if (menuResponse == MAIN_MENU_VERSION){
-		Serial.println(MAIN_MENU_VERSION);
-		_changedLine = false;
+		return _setVersion();
 	}
 
 }
@@ -303,7 +306,6 @@ void Fsm::_runEventView(int event){
 // DELETE
 ////////////////////////////////////////////
 
-
 void Fsm::_setDelete(){
 	_currentState = DELETE_STATE;
 	firstLine = DELETE_STRING_1;
@@ -318,6 +320,29 @@ void Fsm::_runEventDelete(int event){
 	timeCondition = millis() - _startState;
 	_changedLine = true;
 	if(timeCondition > DELETE_TIME || event != BTN_NONE){
+		_setMain();
+		return;
+	}
+	_changedLine = false;
+}
+
+////////////////////////////////////////////
+// VERSION
+////////////////////////////////////////////
+
+void Fsm::_setVersion(){
+	_currentState = VERSION_STATE;
+	firstLine = VERSION_STRING_1;
+	secondLine = VERSION_STRING_2;
+	_changedLine = true;
+	_startState = millis();
+}
+
+void Fsm::_runEventVersion(int event){
+	int timeCondition;
+	timeCondition = millis() - _startState;
+	_changedLine = true;
+	if(timeCondition > VERSION_TIME || event != BTN_NONE){
 		_setMain();
 		return;
 	}

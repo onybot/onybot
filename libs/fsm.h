@@ -9,6 +9,8 @@
 #define PROGRAM_STATE 2
 #define VIEW_STATE 3
 #define DELETE_STATE 4
+#define VERSION_STATE 5
+
 
 #define CHANGE_STRING "CS"
 #define NO_CHANGE_STRING "NCS"
@@ -67,6 +69,10 @@ class Fsm {
 	// delete
 	void _setDelete();
 	void _runEventDelete(int event);
+
+	// version
+	void _setVersion();
+	void _runEventVersion(int event);
 
 };
 

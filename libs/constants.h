@@ -31,12 +31,8 @@ const String MAIN_MENU_STRING_2[] PROGMEM = {
 };
 
 
-#define PROGRAM_WAIT 1000
-
-
-
+#define PROGRAM_WAIT 1000 //time storing command
 #define PROGRAM_WAIT_STRING_1 "ALMACENANDO..."
-
 #define PROGRAM_STRING_1 "SELEC ORDEN"
 #define PROGRAM_MENU_FORWARD "ADELANTE"
 #define PROGRAM_MENU_REAR "ATRAS"
@@ -58,6 +54,10 @@ const String PROGRAM_MENU_STRING_2[] PROGMEM = {
 #define DELETE_STRING_2 "ORDENES"
 #define DELETE_TIME 1500
 
+
+#define VERSION_STRING_1 "ONYBOT 0.0.1"
+#define VERSION_STRING_2 "www.onytes.com"
+#define VERSION_TIME 1500 //time showing version info
 //LCD
 
 #define LCD_CHARS 16
