@@ -3,6 +3,7 @@
 #include "event.h"
 #include "constants.h"
 #include "command.h"
+#include "menu.h"
 #include "program.h"
 
 
@@ -13,7 +14,7 @@ void Fsm::init(){
 }
 
 
-bool Fsm::run_event(int event){
+bool Fsm::runEvent(int event){
 	bool previous;
 	previous = _currentState;
 	switch (_currentState){
@@ -75,62 +76,6 @@ void Fsm::_setState(int state){
 }
 
 
-String Fsm::_runEventMenu(int event, String lineTwoArray[], int arrayLenght, bool showIndex, bool looping){
-	
-	int previous;
-	String aux;
-	previous = _menuIndex;
-	
-	// first time
-	if (_menuIndex == -1){
-		_menuIndex = 0;
-		_changedLine = true;
-	} else {
-		if (event == BTN_UP){
-			_menuIndex = _menuIndex - 1;
-			
-		} else if (event == BTN_DOWN){	
-			_menuIndex = _menuIndex + 1;
-			
-		} else if (event == BTN_SELECT || event == BTN_RIGHT){
-			// change state
-			return lineTwoArray[_menuIndex];
-		} else if (event == BTN_LEFT){
-			// change state
-			return BACK_STRING;
-		}
-		if (_menuIndex < 0 ){
-			if (looping == true){
-				_menuIndex = arrayLenght - 1;
-			} else {
-				_menuIndex = 0;
-			}
-		}
-		if (_menuIndex > arrayLenght - 1){
-			if (looping == true){
-				_menuIndex = 0;
-			} else {
-				_menuIndex = arrayLenght - 1;
-			}
-		}
-		_menuIndex = _menuIndex % arrayLenght;
-	}
-	
-	// update line and set for rewriting
-	if(previous != _menuIndex){
-		if (showIndex == true){
-			aux = lineTwoArray[_menuIndex];
-			secondLine = aux;
-			aux = _menuIndex + 1;
-			secondLine = aux + MENU_SEPARATOR + secondLine;
-		} else {
-			secondLine = lineTwoArray[_menuIndex];
-		}
-		return CHANGE_STRING;
-	} else {
-		return NO_CHANGE_STRING;
-	}
-}
 
 ////////////////////////////////////////////
 // WELCOME
@@ -160,8 +105,20 @@ void Fsm::_setWelcome(){
 ////////////////////////////////////////////
 // MAIN
 ////////////////////////////////////////////
+
+
+void Fsm::_setMain(){
+	Serial.println("set main menu");
+	_currentState = MAIN_STATE;
+	firstLine = MENU_STRING_1;
+	_menuIndex = -1;
+	_runEventMain(BTN_NONE);
+	_changedLine = true;
+}
+
+
 void Fsm::_runEventMain(int event){
-	String menuResponse;
+	Menu menu;
 	int arrayLenght;
 	int i;
 	arrayLenght = (int) sizeof(MAIN_MENU_STRING_2)/sizeof(String);
@@ -169,45 +126,47 @@ void Fsm::_runEventMain(int event){
 	for(i=0; i<arrayLenght; i++){
 		strArray[i] = MAIN_MENU_STRING_2[i];
 	}
-	menuResponse = _runEventMenu(event, strArray, arrayLenght, true, true);
 
-	// update display
-	if (menuResponse == NO_CHANGE_STRING){
-		_changedLine = false;
-	} else if (menuResponse == CHANGE_STRING){
-		_changedLine = true;
+	Serial.println("_menuIndex");
+	Serial.println(_menuIndex);
+	menu.runEvent(event, _menuIndex, strArray, arrayLenght, true);
+	Serial.println("menu.index");
+	Serial.println(menu.index);
 
-	// PROGRAM
-	} if (menuResponse == MAIN_MENU_PROGRAM){
-		return _setProgram();
-	
-	// VIEW
-	} if (menuResponse == MAIN_MENU_VIEW){
-		return _setView();
-	
-	// DELETE
-	} if (menuResponse == MAIN_MENU_DELETE){
-		return _setDelete();
-	
-	// RUN
-	} else if (menuResponse == MAIN_MENU_RUN){
-		return _setRun();
+	if (menu.selected == true){
+		// PROGRAM
+		if (strArray[menu.index] == MAIN_MENU_PROGRAM){
+			return _setProgram();
+		// VIEW
+		} if (strArray[menu.index] == MAIN_MENU_VIEW){
+			return _setView();
+		
+		// DELETE
+		} if (strArray[menu.index] == MAIN_MENU_DELETE){
+			return _setDelete();
+		
+		// RUN
+		} else if (strArray[menu.index] == MAIN_MENU_RUN){
+			return _setRun();
 
-	//VERSION
-	} else if (menuResponse == MAIN_MENU_VERSION){
-		return _setVersion();
+		//VERSION
+		} else if (strArray[menu.index] == MAIN_MENU_VERSION){
+			return _setVersion();
+		}
+	} else {
+		if (menu.index >= 0){
+			_changedLine = true;
+			secondLine = String(menu.index, DEC) + MENU_SEPARATOR + strArray[menu.index];
+			_menuIndex = menu.index;
+		} else {
+			_changedLine = false;
+		}
 	}
-
+	Serial.println("_menuIndex");
+	Serial.println(_menuIndex);
 }
 
 
-void Fsm::_setMain(){
-	_currentState = MAIN_STATE;
-	firstLine = MENU_STRING_1;
-	_menuIndex = -1;
-	_runEventMain(BTN_NONE);
-	_changedLine = true;
-}
 
 
 
@@ -226,7 +185,7 @@ void Fsm::_setProgram(){
 
 
 void Fsm::_runEventProgram(int event){
-	String menuResponse;
+	Menu menu;
 	int arrayLenght;
 	int i;
 
@@ -244,25 +203,26 @@ void Fsm::_runEventProgram(int event){
 	for(i=0; i<arrayLenght; i++){
 		strArray[i] = PROGRAM_MENU_STRING_2[i];
 	}
-
+	_wait = false;
 	// get menu selected
-	menuResponse = _runEventMenu(event, strArray, arrayLenght, false, true);
-
-	if (menuResponse == NO_CHANGE_STRING){
-		_wait = false;
-		_changedLine = false;
-
-	} else if (menuResponse == CHANGE_STRING){
-		_wait = false;
-		_changedLine = true;
-	} else if (menuResponse == BACK_STRING){
+	menu.runEvent(event, _menuIndex, strArray, arrayLenght, true);
+	if (menu.back == true){
 		_setMain();
-	} else {
-		program.addCommand(menuResponse);
+	} else if (menu.selected == true){
+		program.addCommand(strArray[menu.index]);
 		firstLine = PROGRAM_WAIT_STRING_1;
-		secondLine = menuResponse;
+		secondLine = strArray[menu.index];
 		_changedLine = true;
 		_wait = true;
+		
+	} else {
+		if (menu.index >= 0){
+			_changedLine = true;
+			secondLine = strArray[menu.index];
+			_menuIndex = menu.index;
+		} else {
+			_changedLine = false;
+		}
 	}
 }
 
@@ -281,41 +241,46 @@ void Fsm::_setView(){
 }
 
 void Fsm::_runEventView(int event){
-
-	String menuResponse;
+	//definitions
+	Menu menu;
 	Command cmd;
 	int arrayLenght;
+	int numCommands;
 	int i;
-	bool showIndex;
-
-	// update strings
-	arrayLenght = program.getNumCommads();
-
-	if (arrayLenght == 0){
-		showIndex = false;
-		String strArray[1];
-		strArray[i] = VIEW_STRING_EMPTY;
-		// get menu selected
-		menuResponse = _runEventMenu(event, strArray, arrayLenght, showIndex, false);
+	numCommands = program.getNumCommads();
+	if (numCommands == 0){
+		arrayLenght = 1;
 	} else {
-		String strArray[arrayLenght];
-		showIndex = true;
+		arrayLenght = numCommands;
+	}
+	String strArray[arrayLenght];
+
+
+	// create menu string array
+	if (numCommands == 0){
+		strArray[0] = VIEW_STRING_EMPTY;
+	} else {
 		for(i=0; i<arrayLenght; i++){
 			cmd = program.getCommand(i);
 			strArray[i] = cmd.id;
 		}
-		// get menu selected
-		menuResponse = _runEventMenu(event, strArray, arrayLenght, showIndex, false);
 	}
 
-	if (menuResponse == NO_CHANGE_STRING ){
-		_changedLine = false;
-	} else if (menuResponse == CHANGE_STRING && arrayLenght > 0){
-		_changedLine = true;
-	} else if (menuResponse == BACK_STRING){
+	// get menu selected
+	menu.runEvent(event, _menuIndex, strArray, arrayLenght, false);
+
+	if (menu.back == true){
 		_setMain();
-	}else{
-		_changedLine = false;
+	} else if (menu.selected == true){
+		//delete?
+	} else {
+		if (menu.index >= 0){
+			_changedLine = true;
+			secondLine = String(menu.index, DEC) + MENU_SEPARATOR + strArray[menu.index];
+			_menuIndex = menu.index;
+		} else {
+			_changedLine = false;
+		}
 	}
 }
 

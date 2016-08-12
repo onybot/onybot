@@ -35,7 +35,7 @@ void setup() {
 
 void loop() {
 	int light;
-	if(fsm.run_event(event.getEvent())){
+	if(fsm.runEvent(event.getEvent())){
 		lcdPrintLine(lcd, 0, fsm.firstLine);
 		lcdPrintLine(lcd, 1, fsm.secondLine);
 	}

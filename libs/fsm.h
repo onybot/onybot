@@ -12,13 +12,7 @@
 #define VERSION_STATE 5
 #define RUN_STATE 6
 
-
-#define CHANGE_STRING "CS"
-#define NO_CHANGE_STRING "NCS"
-#define BACK_STRING "BCK"
-
 #define INITIAL_STATE WELCOME_STATE
-
 
 
 
@@ -27,7 +21,7 @@ class Fsm {
 	public:
 	//methods
 	void init();
-	bool run_event(int event);
+	bool runEvent(int event);
 
 	//attributes
 	String firstLine;
@@ -48,7 +42,6 @@ class Fsm {
 	void _welcomeState(int event);
 	void _mainState(int event);
 	void _setState(int event);
-	String _runEventMenu(int event, String lineTwoArray[], int arrayLenght, bool showIndex, bool looping);
 
 	// main
 	void _setMain();
