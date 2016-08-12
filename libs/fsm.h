@@ -34,6 +34,7 @@ class Fsm {
 	//Attributes
 	int _currentState;
 	int _menuIndex;
+	int _menuViewIndex;
 	bool _changedLine;
 	int _startState;
 	Program program;

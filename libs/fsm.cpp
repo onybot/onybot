@@ -230,7 +230,7 @@ void Fsm::_setView(){
 	Serial.println("set view");
 	_currentState = VIEW_STATE;
 	firstLine = VIEW_STRING_1;
-	_menuIndex = -1;
+	_menuViewIndex = -1;
 	_runEventView(BTN_NONE);
 	_changedLine = true;
 }
@@ -262,7 +262,7 @@ void Fsm::_runEventView(int event){
 	}
 
 	// get menu selected
-	menu.runEvent(event, _menuIndex, strArray, arrayLenght, false);
+	menu.runEvent(event, _menuViewIndex, strArray, arrayLenght, false);
 
 	if (menu.back == true){
 		_setMain();
@@ -276,7 +276,7 @@ void Fsm::_runEventView(int event){
 			} else {
 				secondLine = String(menu.index + 1, DEC) + MENU_SEPARATOR + strArray[menu.index];
 			}
-			_menuIndex = menu.index;
+			_menuViewIndex = menu.index;
 		} else {
 			_changedLine = false;
 		}
