@@ -127,11 +127,8 @@ void Fsm::_runEventMain(int event){
 		strArray[i] = MAIN_MENU_STRING_2[i];
 	}
 
-	Serial.println("_menuIndex");
-	Serial.println(_menuIndex);
 	menu.runEvent(event, _menuIndex, strArray, arrayLenght, true);
-	Serial.println("menu.index");
-	Serial.println(menu.index);
+
 
 	if (menu.selected == true){
 		// PROGRAM
@@ -156,14 +153,12 @@ void Fsm::_runEventMain(int event){
 	} else {
 		if (menu.index >= 0){
 			_changedLine = true;
-			secondLine = String(menu.index, DEC) + MENU_SEPARATOR + strArray[menu.index];
+			secondLine = String(menu.index + 1, DEC) + MENU_SEPARATOR + strArray[menu.index];
 			_menuIndex = menu.index;
 		} else {
 			_changedLine = false;
 		}
 	}
-	Serial.println("_menuIndex");
-	Serial.println(_menuIndex);
 }
 
 
@@ -276,7 +271,11 @@ void Fsm::_runEventView(int event){
 	} else {
 		if (menu.index >= 0){
 			_changedLine = true;
-			secondLine = String(menu.index, DEC) + MENU_SEPARATOR + strArray[menu.index];
+			if (numCommands == 0){
+				secondLine = strArray[menu.index]; 
+			} else {
+				secondLine = String(menu.index + 1, DEC) + MENU_SEPARATOR + strArray[menu.index];
+			}
 			_menuIndex = menu.index;
 		} else {
 			_changedLine = false;

@@ -57,7 +57,5 @@ void Menu::runEvent(int event, int menuIndex, String lineTwoArray[], int arrayLe
 	} else {
 		index = -1;
 	}
-	Serial.println("index");
-	Serial.println(index);
 }
 
