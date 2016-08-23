@@ -1,0 +1,4 @@
+
+# rfid
+cd external
+git clone git@github.com:miguelbalboa/rfid.git

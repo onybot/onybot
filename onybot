@@ -2,6 +2,7 @@
 import os
 import sys
 import argparse
+import glob
 
 from conf import settings
 
@@ -12,6 +13,9 @@ SEPARATOR_CHAR = '#'
 SEPARATOR_LINE = ''
 for _i in range(30):
     SEPARATOR_LINE += SEPARATOR_CHAR
+
+
+copied_libs = []
 
 def main():
     compilation_error = False
@@ -41,10 +45,8 @@ def main():
     print(sketch_dir_path)
 
     board = settings.BOARD
-
     port = settings.PORT
-
-
+    
     if args.open:
         os.system('{} {}'.format(ide_path, sketch_path))
 
@@ -52,13 +54,8 @@ def main():
         print_fun('COMPILATION')
 
         # copy libs
-        print_fun('copy libs')
-        libs_path = os.path.join(directory, LIBS_NAME)
-        for filename in os.listdir(libs_path):
-            lib_path = os.path.join(libs_path, filename)
-            print(lib_path, ' -> ', sketch_dir_path)
-            os.system('cp {} {}'.format(lib_path, sketch_dir_path))
-        
+        cp_libs(directory, sketch_dir_path)
+
         # COMPILE
         print_fun('compile')
         cmd = '{ide_path} --board {board} --port {port} --upload {sketch}'.format(ide_path=ide_path, 
@@ -70,12 +67,8 @@ def main():
             compilation_error = True
 
         # delete libs
-        print_fun('delete libs')
-        libs_path = os.path.join(directory, 'libs')
-        for filename in os.listdir(libs_path):
-            lib_path = os.path.join(sketch_dir_path, filename)
-            print('delete: ', lib_path)
-            os.system('rm {}'.format(lib_path))
+        rm_libs()
+       
     return compilation_error
 
 def print_fun(string_):
@@ -83,6 +76,40 @@ def print_fun(string_):
     print(SEPARATOR_LINE)
     print(SEPARATOR_CHAR + ' ' + string_)    
     print(SEPARATOR_LINE)
+
+def cp_libs(directory, sketch_dir_path):
+    print_fun('copy libs')
+    external_path = sketch_path = os.path.join(directory, 'external')
+    
+    wildcard_cpp = external_path + '/*/*.cpp'
+    wildcard_h = external_path + '/*/*.h'
+    
+    lib_file_paths = []
+    
+    for f in glob.glob(wildcard_cpp):
+        lib_file_paths.append(f)
+    
+    for f in glob.glob(wildcard_h):
+        lib_file_paths.append(f)
+    
+    libs_path = os.path.join(directory, LIBS_NAME)
+    for filename in os.listdir(libs_path):
+        lib_path = os.path.join(libs_path, filename)
+        lib_file_paths.append(lib_path)
+
+    for f in lib_file_paths:
+        print(f, ' -> ', sketch_dir_path)
+        cmd = 'cp {} {}'.format(f, sketch_dir_path)
+        os.system(cmd)
+        filename = f.split('/')[-1]
+        copied_libs.append(os.path.join(sketch_dir_path, filename))
+
+def rm_libs():
+    print_fun('delete libs')
+    for lib_path in copied_libs:
+        print('delete: ', lib_path)
+        os.system('rm {}'.format(lib_path))
+
 
 
 if __name__ == "__main__":
