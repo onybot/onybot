@@ -5,7 +5,13 @@ import argparse
 
 from conf import settings
 
+LIBS_NAME = 'libs'
 
+SEPARATOR_CHAR = '#'
+
+SEPARATOR_LINE = ''
+for _i in range(30):
+    SEPARATOR_LINE += SEPARATOR_CHAR
 
 def main():
     compilation_error = False
@@ -22,9 +28,17 @@ def main():
 
     args = parser.parse_args()
     ide_path = settings.ARDUINO_IDE_PATH
+    if args.sketch:
+        sketch_name = args.sketch
+    else:
+        sketch_name = 'main'
+    
+    print_fun('sketch')
 
-    sketch_path = os.path.join(directory, 'main', 'main.ino')
-    sketch_dir_path = os.path.join(directory, 'main')
+    sketch_path = os.path.join(directory, sketch_name, sketch_name + '.ino')
+    sketch_dir_path = os.path.join(directory, sketch_name)
+    print(sketch_path)
+    print(sketch_dir_path)
 
     board = settings.BOARD
 
@@ -38,14 +52,15 @@ def main():
         print_fun('COMPILATION')
 
         # copy libs
-        print('# libs')
-        libs_path = os.path.join(directory, 'libs')
+        print_fun('copy libs')
+        libs_path = os.path.join(directory, LIBS_NAME)
         for filename in os.listdir(libs_path):
             lib_path = os.path.join(libs_path, filename)
             print(lib_path, ' -> ', sketch_dir_path)
             os.system('cp {} {}'.format(lib_path, sketch_dir_path))
         
         # COMPILE
+        print_fun('compile')
         cmd = '{ide_path} --board {board} --port {port} --upload {sketch}'.format(ide_path=ide_path, 
             sketch=sketch_path, board=board, port=port)
         print(cmd)
@@ -53,8 +68,9 @@ def main():
         
         if response != 0:
             compilation_error = True
+
         # delete libs
-        print('# libs')
+        print_fun('delete libs')
         libs_path = os.path.join(directory, 'libs')
         for filename in os.listdir(libs_path):
             lib_path = os.path.join(sketch_dir_path, filename)
@@ -64,9 +80,9 @@ def main():
 
 def print_fun(string_):
     print('\n')
-    print('#######################################')
-    print('#  ', string_)    
-    print('#######################################', '\n')
+    print(SEPARATOR_LINE)
+    print(SEPARATOR_CHAR + ' ' + string_)    
+    print(SEPARATOR_LINE)
 
 
 if __name__ == "__main__":
