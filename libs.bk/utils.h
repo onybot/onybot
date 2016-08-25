@@ -2,8 +2,6 @@
 #ifndef utils_h
 #define utils_h
 #include <LiquidCrystal.h>
-#include "lcd.h"
-
 
 void clearLine(LiquidCrystal lcd, int line);
 void lcdPrintLine(LiquidCrystal lcd, int line, String s);
