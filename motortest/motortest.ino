@@ -2,6 +2,7 @@
 #include <LiquidCrystal.h>
 #include "motortest.h"
 #include "utils.h"
+#include "motors.h"
 #include "robot.h"
 
 
@@ -12,69 +13,40 @@
 // select the pins used on the LCD panel
 LiquidCrystal lcd(8, 9, 4, 5, 6, 7);
 
-int state = 0;
+Motors motors;
 
 void setup() {
 	//init serial monitor
 	Serial.begin(9600);
 	Serial.println("Setup fun");
 	
-	//MOTORS
-	pinMode(MOTOR_RIGHT_1, OUTPUT);   // sets the pin as output
-	pinMode(MOTOR_RIGHT_2, OUTPUT);   // sets the pin as output
-	pinMode(MOTOR_LEFT_1, OUTPUT);   // sets the pin as output
-	pinMode(MOTOR_LEFT_2, OUTPUT);   // sets the pin as output
-
-
-
-
+	motors.init();
 	//init lcd
 	lcd.begin(LCD_CHARS, LCD_LINES);        
 	pinMode(LCD_CTRL_LIGHT_PIN, OUTPUT);
 	analogWrite(LCD_CTRL_LIGHT_PIN, DEFAULT_LCD_LIGHT);
 
-	lcdPrintLine(lcd, 0, "LCD");
+	lcdPrintLine(lcd, 0, "MOTORS");
 	lcdPrintLine(lcd, 1, "TEST");
 }
 
 
 void loop() {
-
 	Serial.println("loop");
-
-	switch (state) {
-		case 0:
-			digitalWrite(MOTOR_RIGHT_1, LOW);
-			digitalWrite(MOTOR_RIGHT_2, HIGH);
-			digitalWrite(MOTOR_LEFT_1, LOW);
-			digitalWrite(MOTOR_LEFT_2, HIGH);
-			break;
-		case 1:
-			digitalWrite(MOTOR_RIGHT_1, LOW);
-			digitalWrite(MOTOR_RIGHT_2, LOW);
-			digitalWrite(MOTOR_LEFT_1, LOW);
-			digitalWrite(MOTOR_LEFT_2, LOW);
-			break;
-
-		case 2:
-			digitalWrite(MOTOR_RIGHT_1, HIGH);
-			digitalWrite(MOTOR_RIGHT_2, LOW);
-			digitalWrite(MOTOR_LEFT_1, HIGH);
-			digitalWrite(MOTOR_LEFT_2, LOW);
-			break;
-
-		case 3:
-			digitalWrite(MOTOR_RIGHT_1, LOW);
-			digitalWrite(MOTOR_RIGHT_2, LOW);
-			digitalWrite(MOTOR_LEFT_1, LOW);
-			digitalWrite(MOTOR_LEFT_2, LOW);
-			break;
-		default:
-			break;
-		}
-	state ++;
-	state = state % 4;
-
+	motors.setFordward();
+	delay(LOOP_WAITING);
+	motors.setBack();
+	delay(LOOP_WAITING);
+	motors.setShortTurnLeft();
+	delay(LOOP_WAITING);
+	motors.setLongTurnLeft();
+	delay(LOOP_WAITING);
+	motors.setShortTurnRight();
+	delay(LOOP_WAITING);
+	motors.setLongTurnRight();
+	delay(LOOP_WAITING);
+	motors.setStop();
 	delay(LOOP_WAITING);
 }
+
 
