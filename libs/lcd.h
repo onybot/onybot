@@ -1,9 +1,7 @@
+#include "constants.h"
 
 #ifndef lcd_h
 #define lcd_h
-
-
-#define MAX_ANALOG_WRITE 255
 
 //LCD
 
