@@ -11,6 +11,6 @@
 #define		MOTOR_LEFT_2		19
 #define		MOTOR_LEFT_IN		31
 
-
+#define STEPS	17
 #endif
 

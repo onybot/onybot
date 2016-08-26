@@ -49,34 +49,45 @@ void Motors::setMotorLeftStop(){
 void Motors::setFordward(){
 	setMotorRightFoward();
 	setMotorLeftFoward();
+	checkSteps(STEPS, STEPS);
+
 }
 
 void Motors::setBack(){
 	setMotorRightBack();
 	setMotorLeftBack();
+	checkSteps(STEPS, STEPS);
+
 }
 
 void Motors::setShortTurnLeft(){
 	setMotorRightFoward();
 	setMotorLeftBack();
+	checkSteps(STEPS, STEPS);
 
 }
 
 void Motors::setLongTurnLeft(){
 	setMotorRightFoward();
 	setMotorLeftStop();
+	checkSteps(STEPS, -1);
+
 
 }
 
 void Motors::Motors::setShortTurnRight(){
 	setMotorRightBack();
 	setMotorLeftFoward();
+	checkSteps(STEPS, STEPS);
+
 
 }
 
 void Motors::Motors::setLongTurnRight(){
 	setMotorRightStop();
 	setMotorLeftFoward();
+	checkSteps(0, STEPS);
+
 
 }
 
@@ -86,23 +97,43 @@ void Motors::setStop(){
 }
 
 
-void Motors::steps(){
-	int i;
+void Motors::checkSteps(int motorRight, int motorLeft){
+	int left;
+	int right;
 	int leftVal;
-	int storedVal;
-	setStop();
-	
-	storedVal = HIGH;
-	i = 0;
-	setMotorLeftFoward();
-	while(i<20){
+	int leftStoredVal;
+	int rightVal;
+	int rightStoredVal;
+
+	left = 0;
+	right = 0;
+	leftStoredVal = HIGH;
+	rightStoredVal = HIGH;
+
+	while(true){
+		if(left >= motorRight && left >= motorRight){
+			setStop();
+			break;
+		} 
+		if(left >= motorLeft){
+			setMotorLeftStop();
+		}
+		if(right >= motorRight){
+			setMotorRightStop();
+		}
+		
 		leftVal = digitalRead(MOTOR_LEFT_IN); 
-		if(leftVal!=storedVal){
-			storedVal = leftVal;
-			i++;
+		if(leftVal!=leftStoredVal){
+			leftStoredVal = leftVal;
+			left++;
+		}
+		rightVal = digitalRead(MOTOR_RIGHT_IN); 
+		if(rightVal!=rightStoredVal){
+			rightStoredVal = rightVal;
+			right++;
 		}
 		delay(10);
+
 	}
-	setMotorLeftStop();
-	delay(1000);
+
 }

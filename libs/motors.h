@@ -22,7 +22,7 @@ class Motors {
 	void setShortTurnRight();
 	void setLongTurnRight();
 	void setStop();
-	void steps();
+	void checkSteps(int motorRight, int motorLeft);
 	//attributes
 
 
