@@ -84,3 +84,25 @@ void Motors::setStop(){
 	setMotorRightStop();
 	setMotorLeftStop();
 }
+
+
+void Motors::steps(){
+	int i;
+	int leftVal;
+	int storedVal;
+	setStop();
+	
+	storedVal = HIGH;
+	i = 0;
+	setMotorLeftFoward();
+	while(i<20){
+		leftVal = digitalRead(MOTOR_LEFT_IN); 
+		if(leftVal!=storedVal){
+			storedVal = leftVal;
+			i++;
+		}
+		delay(10);
+	}
+	setMotorLeftStop();
+	delay(1000);
+}

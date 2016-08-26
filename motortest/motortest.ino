@@ -33,6 +33,7 @@ void setup() {
 
 void loop() {
 	Serial.println("loop");
+	motors.steps();
 	motors.setFordward();
 	delay(LOOP_WAITING);
 	motors.setBack();
